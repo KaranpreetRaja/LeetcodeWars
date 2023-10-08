@@ -1,38 +1,46 @@
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, InputHTMLAttributes, useRef, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 
 type Props = {};
 
 const Form = (props: Props) => {
+  const { register, handleSubmit, formState : {errors} } = useForm();
+  
+
+  // const person = {name: '', age: 0};
+
   const nameRef = useRef<HTMLInputElement>(null);
-  const maxPlayersRef = useRef<HTMLInputElement>(null);
 
-  const [room, setRoom] = useState({ name: "", maxPlayers: "" });
+  const ageRef = useRef<HTMLInputElement>(null);
 
-  const handelSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    if (nameRef.current != null && maxPlayersRef.current != null) {
-      console.log(
-        "name" +
-          nameRef.current.value +
-          " maxPlayers" +
-          maxPlayersRef.current.value
-      );
-    }
-  };
+
+  const onSubmit = (data: FieldValues) => console.log(data);
+
+  // const onSubmit = (event: FormEvent) => {
+  //   console.log(person);
+
+  //   if (nameRef.current != null) {
+  //     person.name = nameRef.current.value;
+
+  //   }
+  //   if (ageRef.current != null){
+  //     person.age = parseInt(ageRef.current.value);
+  //   }
+  //   console.log(person);
+  // }
 
   return (
-    <form onSubmit={handelSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-3">
         <label htmlFor="name" className="form-label">
           Room Name
         </label>
         <input
-          ref={nameRef}
-          onChange={(event) => setRoom({ ...room, name: event.target.value })}
+          {...register('name', {required: true, minLength: 3})}
           id="name"
           type="text"
+          ref={nameRef}
           className="form-control"
-          value={room.name}
         />
       </div>
       <div className="mb-3">
@@ -40,11 +48,11 @@ const Form = (props: Props) => {
           Max Players
         </label>
         <input
-          ref={maxPlayersRef}
+          {...register("maxPlayers")}
           id="maxPlayers"
           type="number"
+          ref={ageRef}
           className="form-control"
-          value={room.maxPlayers}
         />
       </div>
       <button className="btn btn-primary" type="submit">
