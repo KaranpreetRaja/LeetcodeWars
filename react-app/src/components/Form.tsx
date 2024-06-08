@@ -1,18 +1,21 @@
 import React, { FormEvent, InputHTMLAttributes, useRef, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
+import ProblemList from "./ProblemList";
 
 type Props = {};
 
 const Form = (props: Props) => {
-  const { register, handleSubmit, formState : {errors} } = useForm();
-  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   // const person = {name: '', age: 0};
 
   const nameRef = useRef<HTMLInputElement>(null);
 
   const ageRef = useRef<HTMLInputElement>(null);
-
 
   const onSubmit = (data: FieldValues) => console.log(data);
 
@@ -36,7 +39,7 @@ const Form = (props: Props) => {
           Room Name
         </label>
         <input
-          {...register('name', {required: true, minLength: 3})}
+          {...register("name", { required: true, minLength: 3 })}
           id="name"
           type="text"
           ref={nameRef}
@@ -55,6 +58,22 @@ const Form = (props: Props) => {
           className="form-control"
         />
       </div>
+
+      {/* TODO: Problem Select */}
+
+      {/* Game Mode: First To Finish or Performance Within Time */}
+      <div className="mb-3">
+        <label htmlFor="gameType" className="form-label">
+          Game Type
+        </label>
+        <select {...register("gameType")} id="gameType" className="form-select">
+          <option value="First To Finish">First To Finish</option>
+          <option value="Performance Within Time">
+            Performance Within Time
+          </option>
+        </select>
+      </div>
+
       <button className="btn btn-primary" type="submit">
         Create Room
       </button>
